@@ -1,0 +1,70 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    metadata:
+      name: {{ .Release.Name }}
+      labels:
+        app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+        app.kubernetes.io/instance: {{ .Release.Name | quote }}
+        helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    spec:
+      restartPolicy: Never
+      initContainers:
+        - name: check-db-ready
+          image: postgres:latest
+          env:
+            - name: POSTGRES_HOST
+              value: {{ include "postgresql.fullname" . | quote }}
+            - name: POSTGRES_PORT
+              value: {{ .Values.postgresql.service.port | quote }}
+          command:
+            - sh
+            - "-c"
+            - |
+              until pg_isready -h $POSTGRES_HOST  -p  $POSTGRES_PORT;
+              do echo waiting for database; sleep 2; done;
+      containers:
+        - name: post-install-job
+          image: tyku/homework_2:latest
+          env:
+            - name: NODE_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: homework-config
+                  key: NODE_ENV
+            - name: DATABASE_CONNECTION_STRING
+              valueFrom:
+                secretKeyRef:
+                  name: homework-secret
+                  key: DATABASE_URI
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: homework-secret
+                  key: DB_USER
+            - name: DB_PSWD
+              valueFrom:
+                secretKeyRef:
+                  name: homework-secret
+                  key: DB_PSWD
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: homework-config
+                  key: DB_NAME
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: homework-config
+                  key: DB_PORT
+            - name: DB_HOST
+              value: {{ include "postgresql.fullname" . | quote }}
+          command: ["npm", "run", "migration"]
+  backoffLimit: 0
