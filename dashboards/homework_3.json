@@ -2016,5 +2016,8 @@
   "timezone": "",
   "title": "homework_3",
   "uid": "qvcXUEnnz",
-  "version": 9
+  "variables": {
+    "list": []
+  },
+  "version": 1
 }
