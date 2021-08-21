@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: "{{ include "homework_2_helm.fullname" . }}-test-connection"
+  name: "{{ include "homework_3_prom.fullname" . }}-test-connection"
   labels:
-    {{- include "homework_2_helm.labels" . | nindent 4 }}
+    {{- include "homework_3_prom.labels" . | nindent 4 }}
   annotations:
     "helm.sh/hook": test
 spec:
@@ -11,5 +11,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "homework_2_helm.fullname" . }}:{{ .Values.service.port }}']
+      args: ['{{ include "homework_3_prom.fullname" . }}:{{ .Values.service.port }}']
   restartPolicy: Never

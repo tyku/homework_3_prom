@@ -1,0 +1,20 @@
+{{- if .Values.servicemonitor.metrics.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "homework_3_prom.fullname" . }}
+  labels:
+    {{- include "homework_3_prom.labels" . | nindent 4 }}
+spec:
+  jobLabel: {{ include "homework_3_prom.fullname" . }}
+  namespaceSelector:
+    matchNames:
+      - "{{ $.Release.Namespace }}"
+  selector:
+    matchLabels:
+      {{- include "homework_3_prom.selectorLabels" . | nindent 6 }}
+  endpoints:
+    - interval: 15s
+      port: web
+      path: /metrics
+{{- end }}

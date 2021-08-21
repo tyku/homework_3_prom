@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "homework_2_helm.fullname" . }}
+  name: {{ include "homework_3_prom.fullname" . }}
   labels:
-    {{- include "homework_2_helm.labels" . | nindent 4 }}
+    {{- include "homework_3_prom.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "homework_2_helm.selectorLabels" . | nindent 6 }}
+      {{- include "homework_3_prom.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "homework_2_helm.selectorLabels" . | nindent 8 }}
+        {{- include "homework_3_prom.selectorLabels" . | nindent 8 }}
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/config.yaml") . | sha256sum }}
     spec:

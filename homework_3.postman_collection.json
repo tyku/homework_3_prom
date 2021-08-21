@@ -6,6 +6,48 @@
 	},
 	"item": [
 		{
+			"name": "metrics",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://arch.homework/otusapp/artem/metrics",
+					"protocol": "http",
+					"host": [
+						"arch",
+						"homework"
+					],
+					"path": [
+						"otusapp",
+						"artem",
+						"metrics"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "smth",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://arch.homework/otusapp/artem/smth",
+					"protocol": "http",
+					"host": [
+						"arch",
+						"homework"
+					],
+					"path": [
+						"otusapp",
+						"artem",
+						"smth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "health",
 			"request": {
 				"method": "GET",

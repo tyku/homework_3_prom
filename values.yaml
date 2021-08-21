@@ -1,15 +1,15 @@
-replicaCount: 1
+replicaCount: 2
 
 environment:
   NODE_PATH: development
 
 image:
-  repository: tyku/homework_2
+  repository: tyku/homework_3
   imagePullPolicy: Always
   tag: latest
 
 migration:
-  repository: tyku/homework_2
+  repository: tyku/homework_3
   imagePullPolicy: Always
   tag: latest
 
@@ -38,4 +38,12 @@ postgresql:
   postgresqlDatabase: myapp
   service:
     port: "5432"
-
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      
+servicemonitor:
+  metrics:
+    serviceMonitor:
+      enabled: true
